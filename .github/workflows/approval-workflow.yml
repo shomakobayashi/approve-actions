@@ -1,0 +1,28 @@
+name: Manual Approval Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: 'メッセージ（オプション）'
+        required: false
+        default: 'Hello World'
+        type: string
+
+jobs:
+  request-approval:
+    runs-on: ubuntu-latest
+    environment: 
+      name: approval-required
+    steps:
+      - name: Wait for approval
+        run: |
+          echo "承認待ちです..."
+          echo "実行者: ${{ github.actor }}"
+          echo "実行時刻: $(date)"
+          
+      - name: Execute after approval
+        run: |
+          echo "承認されました！"
+          echo "${{ github.event.inputs.message || 'Hello World' }}"
+          echo "承認者による実行が完了しました"
